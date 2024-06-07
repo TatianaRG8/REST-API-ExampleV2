@@ -64,6 +64,26 @@ const deleteMovie = async (request, response) => {
   }
 };
 
+const AddActorToMovie = async (request, response) => {
+  try {
+    const movieId = request.params.id
+    const movie = await Movie.findByPk(movieId)
+
+    if(!movie){
+      return response.status(404).json({error: "MOvie not found"})
+    }
+    const actor = await Actor.findOne({
+      wjere: {
+        id: request.params.id
+      }
+    });
+    await movie.AddActor(actor[0]);
+    return response.status(200).json(movie);
+  } catch (error) {
+    return response.status(500).send(error);
+  }
+};
+
 module.exports = {
   getAllMovies,
   getMovie,
